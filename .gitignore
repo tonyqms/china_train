@@ -6,3 +6,8 @@ Thumbs.db
 .vercel
 node_modules/
 *.bat
+
+# OSM raw cache — large; regenerate locally (see README)
+data/osm_railways_cache.json
+data/railways_osm.json
+data/hsr_sample.json

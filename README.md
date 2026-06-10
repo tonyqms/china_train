@@ -11,34 +11,53 @@ Interactive timeline visualization inspired by [JIVX Eki · 駅](https://jivx.co
 
 ## Quick start
 
+Clone and open — **built data ships in `public/data/`** (no OSM fetch required):
+
+```bash
+cd public
+python -m http.server 8080
+```
+
+Open **http://127.0.0.1:8080** (hard refresh: Ctrl+F5)
+
+### Rebuild data locally (optional)
+
 ```bash
 python scripts/build_data.py
-python scripts/merge_railway_cache.py   # builds ~3000+ lines from cached OSM tiles
+python scripts/merge_railway_cache.py
 cd public
-python -m http.server 3456
+python -m http.server 8080
 ```
 
-Open **http://127.0.0.1:3456** (hard refresh: Ctrl+F5)
+## Deploy (Vercel)
 
-## Railway lines (why only 9 lines before?)
+1. Push to GitHub — commit **`public/data/*.json`**, not the OSM cache
+2. Vercel → Import repo → **Root Directory: `public`**
+3. Build Command: leave empty → Deploy
 
-Default build includes **9 curated historical lines** only. To add the modern network:
+The file `data/osm_railways_cache.json` (~68 MB) is **gitignored**. It is only for local regeneration of railway lines.
+
+## Railway lines
+
+Shipped build includes **~5000+ OSM mainline segments** plus 9 curated historical lines in `public/data/railways.json`.
+
+To refresh from OpenStreetMap:
 
 ```bash
-# Optional: refresh OSM cache (uses curl, not Python urllib — avoids 403/406)
+# Optional: download OSM tiles (needs curl; may take a while / rate limits)
 python scripts/fetch_osm_railways.py
 
-# Always run after fetch (or uses existing data/osm_railways_cache.json)
 python scripts/merge_railway_cache.py
+python scripts/build_data.py
 ```
 
-If `fetch_osm_railways.py` still fails (Overpass rate limits), `merge_railway_cache.py` works offline from any cache already on disk (~3283 main-line segments).
+If `fetch_osm_railways.py` fails, `merge_railway_cache.py` still works if you already have `data/osm_railways_cache.json` on disk.
 
 ## Data sources
 
 | Layer | Source |
 |-------|--------|
-| Stations | Wikidata (CC0) — P625, P1619, P3999 |
-| Modern railways | OpenStreetMap via Overpass API |
+| Stations | Wikidata (CC0) — mainland + Taiwan; excludes metro |
+| Modern railways | OpenStreetMap → merged into `public/data/railways.json` |
 | Early railways | Curated from 上海市宝山区人民政府, Cambridge IJAS 2014, 唐胥铁路档案 |
 | Coastline | Natural Earth |
