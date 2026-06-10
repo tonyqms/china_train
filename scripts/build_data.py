@@ -24,6 +24,7 @@ END_YEAR = date.today().year
 
 METRO_NAME = re.compile(
     r"地铁|地鐵|轨道交通|軌道交通|轻轨|輕軌|有轨|有軌|电车|電車|"
+    r"捷运|捷運|"
     r"monorail|maglev|磁浮|磁悬浮|"
     r"\bsubway\b|\bmetro\b|\bmtr\b|\bbts\b|\bmrt\b|"
     r"airport express|机场快线|機場快線|"
@@ -229,7 +230,7 @@ def main() -> None:
         "first_line_year": 1876,
         "filter": "intercity rail only — metro/subway/light rail excluded",
         "sources": [
-            "Wikidata (CC0): intercity railway stations — excludes Q928830 metro, Q2175765 tram, etc.",
+            "Wikidata (CC0): intercity railway stations — mainland (Q148) + Taiwan (Q865)",
             "OpenStreetMap railway=rail main lines",
             "Curated historical railways: Wusong 1876, Tangxu 1881, Jinghan 1906, etc.",
             "Manual date corrections: data/station_corrections.json",

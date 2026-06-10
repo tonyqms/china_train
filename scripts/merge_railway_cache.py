@@ -1,20 +1,30 @@
 #!/usr/bin/env python3
-"""Build railways.json from OSM cache — mainline rail only (no subway/light_rail)."""
+"""Build railways.json from OSM cache — mainline intercity rail only."""
 from __future__ import annotations
 
 import json
-import math
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT / "scripts") not in sys.path:
+    sys.path.insert(0, str(ROOT / "scripts"))
+
+from railway_filters import (
+    is_metro_row,
+    is_spur_row,
+    seg_length,
+    simplify_coords,
+)
+
 CACHE = ROOT / "data" / "osm_railways_cache.json"
 HIST = ROOT / "data" / "historical_railways.json"
 OUT = ROOT / "public" / "data" / "railways.json"
 META = ROOT / "public" / "data" / "meta.json"
 
-MAX_OSM_SEGMENTS = 8000
-MIN_LENGTH = 0.12
-MAX_POINTS = 4
+MAX_OSM_SEGMENTS = 5500
+MIN_LENGTH = 0.06
+MAX_POINTS = 16
 
 
 def load_curated() -> list[list]:
@@ -32,29 +42,59 @@ def load_curated() -> list[list]:
     ]
 
 
-def seg_length(coords: list) -> float:
-    total = 0.0
-    for i in range(1, len(coords)):
-        lon1, lat1 = coords[i - 1]
-        lon2, lat2 = coords[i]
-        dx = (lon2 - lon1) * math.cos(math.radians((lat1 + lat2) / 2))
-        dy = lat2 - lat1
-        total += math.hypot(dx, dy)
-    return total
+def row_tags(row: list) -> dict | None:
+    if len(row) > 6 and isinstance(row[6], dict):
+        return row[6]
+    return None
 
 
-def simplify(coords: list, max_pts: int = MAX_POINTS) -> list:
-    if len(coords) <= max_pts:
-        return coords
-    step = max(1, len(coords) // max_pts)
-    out = coords[::step]
-    if out[-1] != coords[-1]:
-        out.append(coords[-1])
-    return out
+URBAN_METRO_BOXES = [
+    (116.0, 39.6, 116.7, 40.2),   # Beijing
+    (121.1, 30.9, 121.9, 31.5),   # Shanghai
+    (113.1, 22.9, 113.6, 23.4),   # Guangzhou
+    (114.0, 22.4, 114.3, 22.6),   # Shenzhen/HK border
+    (113.8, 22.2, 114.2, 22.45),  # Hong Kong Kowloon
+    (104.0, 30.5, 104.3, 30.8),   # Chengdu core
+]
+
+
+def is_urban_short_spur(coords: list, length: float) -> bool:
+    """Drop short 2-node fragments in major metro cities (often mis-tagged rail)."""
+    if length > 0.22 or len(coords) > 2:
+        return False
+    for lon, lat in (coords[0], coords[-1]):
+        for west, south, east, north in URBAN_METRO_BOXES:
+            if west <= lon <= east and south <= lat <= north:
+                return True
+    return False
+
+
+def accept_osm_row(row: list) -> tuple[bool, str]:
+    name_zh, name_en = row[1] or "", row[2] or ""
+    tags = row_tags(row)
+
+    if is_metro_row(name_zh, name_en, tags):
+        return False, "metro"
+    if is_spur_row(name_zh, name_en, tags):
+        return False, "spur"
+
+    coords = row[5]
+    if not coords or len(coords) < 2:
+        return False, "empty"
+
+    length = seg_length(coords)
+    if length < MIN_LENGTH:
+        return False, "short"
+    if is_urban_short_spur(coords, length):
+        return False, "urban_spur"
+
+    return True, "ok"
 
 
 def main() -> None:
     curated = load_curated()
+    stats = {"metro": 0, "spur": 0, "short": 0, "urban_spur": 0, "empty": 0, "ok": 0}
+
     if not CACHE.exists():
         print(f"No cache at {CACHE}; keeping curated lines only.")
         OUT.write_text(json.dumps(curated, ensure_ascii=False), encoding="utf-8")
@@ -70,15 +110,19 @@ def main() -> None:
             if rid in seen:
                 continue
             seen.add(rid)
+
+            ok, reason = accept_osm_row(row)
+            stats[reason] = stats.get(reason, 0) + 1
+            if not ok:
+                continue
+
             coords = row[5]
-            if not coords or len(coords) < 2:
-                continue
+            if len(coords) > MAX_POINTS:
+                coords = simplify_coords(coords, max_pts=MAX_POINTS)
             length = seg_length(coords)
-            if length < MIN_LENGTH:
-                continue
             scored.append((
                 length,
-                [rid, row[1], row[2], row[3], row[4], simplify(coords)],
+                [rid, row[1], row[2], row[3], row[4], coords],
             ))
 
     scored.sort(key=lambda x: x[0], reverse=True)
@@ -90,11 +134,17 @@ def main() -> None:
         meta = json.loads(META.read_text(encoding="utf-8"))
         meta["railway_count"] = len(merged)
         meta["osm_segment_count"] = len(osm_rows)
+        meta["railway_filter"] = (
+            "intercity mainline — metro/spurs/urban fragments excluded; "
+            f"preserve geometry up to {MAX_POINTS} pts"
+        )
         META.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print(
-        f"Wrote {len(merged)} mainline segments "
-        f"({len(curated)} curated + {len(osm_rows)} OSM, {len(seen)} raw ways scanned)"
+        f"Wrote {len(merged)} segments ({len(curated)} curated + {len(osm_rows)} OSM)\n"
+        f"  scanned {len(seen)} ways — dropped metro {stats.get('metro',0)}, "
+        f"spur {stats.get('spur',0)}, short {stats.get('short',0)}, "
+        f"urban_spur {stats.get('urban_spur',0)}"
     )
 
 

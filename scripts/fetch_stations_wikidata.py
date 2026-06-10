@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch intercity railway stations from Wikidata (excludes metro/subway/light rail)."""
+"""Fetch intercity railway stations from Wikidata (mainland + Taiwan)."""
 from __future__ import annotations
 
 import csv
@@ -7,13 +7,15 @@ import json
 import time
 import urllib.parse
 import urllib.request
-from collections import defaultdict
 from pathlib import Path
 
 from date_utils import parse_year, resolve_close_years, resolve_open_years
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "stations_wikidata.csv"
+
+# Q148 China, Q865 Taiwan
+COUNTRY_CODES = ["Q148", "Q865"]
 
 EXCLUDED_TYPES = [
     "Q928830",
@@ -29,13 +31,16 @@ EXCLUDE_FILTER = "\n".join(
     for q in EXCLUDED_TYPES
 )
 
+COUNTRY_FILTER = "FILTER(?country IN (wd:Q148, wd:Q865))"
+
 QUERY = f"""
 SELECT ?station ?stationLabel ?lat ?lon ?opening ?closing ?dissolved ?endTime ?serviceEntry ?enLabel WHERE {{
   ?station wdt:P31/wdt:P279* wd:Q55488 ;
-           wdt:P17 wd:Q148 ;
+           wdt:P17 ?country ;
            wdt:P625 ?coord .
   BIND(geof:latitude(?coord) AS ?lat)
   BIND(geof:longitude(?coord) AS ?lon)
+  {COUNTRY_FILTER}
 {EXCLUDE_FILTER}
   OPTIONAL {{ ?station wdt:P1619 ?opening . }}
   OPTIONAL {{ ?station wdt:P3999 ?closing . }}
@@ -58,7 +63,7 @@ def fetch_bindings() -> list[dict]:
     )
     req = urllib.request.Request(
         url,
-        headers={"User-Agent": "ChinaRailViz/1.2 (intercity rail research)"},
+        headers={"User-Agent": "ChinaRailViz/1.3 (intercity rail research; incl. Taiwan)"},
     )
     with urllib.request.urlopen(req, timeout=300) as resp:
         data = json.loads(resp.read())
@@ -119,7 +124,7 @@ def aggregate_rows(bindings: list[dict]) -> list[dict]:
 
 
 def main() -> None:
-    print("Fetching intercity stations from Wikidata…", flush=True)
+    print("Fetching intercity stations (mainland + Taiwan) from Wikidata…", flush=True)
     bindings = fetch_bindings()
     rows = aggregate_rows(bindings)
     OUT.parent.mkdir(parents=True, exist_ok=True)
@@ -131,7 +136,11 @@ def main() -> None:
         w = csv.DictWriter(f, fieldnames=fields)
         w.writeheader()
         w.writerows(rows)
-    print(f"Wrote {len(rows)} stations ({len(bindings)} raw bindings) -> {OUT}", flush=True)
+    tw = sum(
+        1 for r in rows
+        if 119.2 <= float(r["lon"]) <= 122.1 and 21.8 <= float(r["lat"]) <= 25.4
+    )
+    print(f"Wrote {len(rows)} stations ({tw} in Taiwan bbox) -> {OUT}", flush=True)
     time.sleep(1)
 
 
