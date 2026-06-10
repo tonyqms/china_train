@@ -1,0 +1,320 @@
+{
+  "csv_issue_count": 28,
+  "total_issue_count": 28,
+  "top_open_years": [
+    [
+      "2019",
+      96
+    ],
+    [
+      "2021",
+      91
+    ],
+    [
+      "2014",
+      89
+    ],
+    [
+      "2020",
+      82
+    ],
+    [
+      "2011",
+      81
+    ],
+    [
+      "2012",
+      75
+    ],
+    [
+      "2016",
+      71
+    ],
+    [
+      "2015",
+      69
+    ],
+    [
+      "1996",
+      62
+    ],
+    [
+      "2023",
+      61
+    ],
+    [
+      "2022",
+      56
+    ],
+    [
+      "2025",
+      56
+    ],
+    [
+      "2018",
+      50
+    ],
+    [
+      "2013",
+      50
+    ],
+    [
+      "2017",
+      50
+    ]
+  ],
+  "issues": [
+    {
+      "source": "csv",
+      "id": "Q6385346",
+      "name": "柯柯站 / Keke railway station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1979-01-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    },
+    {
+      "source": "csv",
+      "id": "Q6487720",
+      "name": "兰州站 / Lanzhou railway station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1952-01-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    },
+    {
+      "source": "csv",
+      "id": "Q986802",
+      "name": "西宁站 / Xining railway station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1959-10-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    },
+    {
+      "source": "csv",
+      "id": "Q986988",
+      "name": "格尔木站 / Golmud Railway Station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1979-10-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    },
+    {
+      "source": "csv",
+      "id": "Q8071218",
+      "name": "诸暨站 / Zhuji railway station",
+      "issue": "qtr_early_open",
+      "open_date": "1931-01-01",
+      "close_date": "",
+      "suggest": "open_year=2006 (青藏铁路客运开通)"
+    },
+    {
+      "source": "csv",
+      "id": "Q11067887",
+      "name": "弯坵站 / Wanqiu Railway Station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1970-01-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    },
+    {
+      "source": "csv",
+      "id": "Q11059819",
+      "name": "师庄站 / Shizhuang Railway Station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1995-01-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    },
+    {
+      "source": "csv",
+      "id": "Q11078785",
+      "name": "攀枝花站 / Panzhihua Railway Station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1970-01-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    },
+    {
+      "source": "csv",
+      "id": "Q10867068",
+      "name": "三门峡站 / Sanmenxia Railway Station",
+      "issue": "qtr_early_open",
+      "open_date": "1927-01-01",
+      "close_date": "",
+      "suggest": "open_year=2006 (青藏铁路客运开通)"
+    },
+    {
+      "source": "csv",
+      "id": "Q10878376",
+      "name": "乐山北站 / Leshanbei Railway Station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1966-01-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    },
+    {
+      "source": "csv",
+      "id": "Q17023576",
+      "name": "坡底下站 / Podixia Railway Station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1953-01-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    },
+    {
+      "source": "csv",
+      "id": "Q11177796",
+      "name": "黄水塘站 / Huangshuitang Railway Station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1970-01-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    },
+    {
+      "source": "csv",
+      "id": "Q4843219",
+      "name": "白果站 / Baiguo railway station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1970-01-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    },
+    {
+      "source": "csv",
+      "id": "Q15954599",
+      "name": "西固城站 / Xigucheng Railway Station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1953-01-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    },
+    {
+      "source": "csv",
+      "id": "Q11133333",
+      "name": "汉源站 / Hanyuan Railway Station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1970-07-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    },
+    {
+      "source": "csv",
+      "id": "Q17029067",
+      "name": "花棚子站 / Huapengzi Railway Station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1970-01-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    },
+    {
+      "source": "csv",
+      "id": "Q24841345",
+      "name": "金华西站 / Jinhuaxi Railway Station",
+      "issue": "qtr_early_open",
+      "open_date": "1932-02-15",
+      "close_date": "",
+      "suggest": "open_year=2006 (青藏铁路客运开通)"
+    },
+    {
+      "source": "csv",
+      "id": "Q11622061",
+      "name": "萧山西站 / Xiaoshanxi Railway Station",
+      "issue": "qtr_early_open",
+      "open_date": "1931-06-01",
+      "close_date": "",
+      "suggest": "open_year=2006 (青藏铁路客运开通)"
+    },
+    {
+      "source": "csv",
+      "id": "Q10893605",
+      "name": "兰州东站 / Lanzhou East railway station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1952-01-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    },
+    {
+      "source": "csv",
+      "id": "Q10893955",
+      "name": "关村坝站 / Guancunba Railway Station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1970-01-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    },
+    {
+      "source": "csv",
+      "id": "Q22773585",
+      "name": "汤溪站 / Tangxi Railway Station (Zhejiang)",
+      "issue": "qtr_early_open",
+      "open_date": "1932-01-01",
+      "close_date": "",
+      "suggest": "open_year=2006 (青藏铁路客运开通)"
+    },
+    {
+      "source": "csv",
+      "id": "Q22773804",
+      "name": "塘雅站 / Tangya Railway Station",
+      "issue": "qtr_early_open",
+      "open_date": "1932-01-01",
+      "close_date": "",
+      "suggest": "open_year=2006 (青藏铁路客运开通)"
+    },
+    {
+      "source": "csv",
+      "id": "Q15916275",
+      "name": "灵宝站 / Lingbao railway station",
+      "issue": "qtr_early_open",
+      "open_date": "1927-01-01",
+      "close_date": "",
+      "suggest": "open_year=2006 (青藏铁路客运开通)"
+    },
+    {
+      "source": "csv",
+      "id": "Q17033431",
+      "name": "陈官营站 / Chenguanying Railway Station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1953-01-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    },
+    {
+      "source": "csv",
+      "id": "Q15924109",
+      "name": "潼关站 / Tongguan railway station",
+      "issue": "qtr_early_open",
+      "open_date": "1931-01-01",
+      "close_date": "",
+      "suggest": "open_year=2006 (青藏铁路客运开通)"
+    },
+    {
+      "source": "csv",
+      "id": "Q15402249",
+      "name": "马乡站 / Maxiang railway station",
+      "issue": "qtr_early_open",
+      "open_date": "1929-01-01",
+      "close_date": "",
+      "suggest": "open_year=2006 (青藏铁路客运开通)"
+    },
+    {
+      "source": "csv",
+      "id": "Q17041079",
+      "name": "乃托站 / Naituo Railway Station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1970-01-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    },
+    {
+      "source": "csv",
+      "id": "Q123011976",
+      "name": "花龙门站 / Hualongmen Railway Station",
+      "issue": "tibet_pre_rail",
+      "open_date": "1993-01-01",
+      "close_date": "",
+      "suggest": "verify opening — Qinghai-Tibet corridor station before modern rail era"
+    }
+  ]
+}

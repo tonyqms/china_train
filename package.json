@@ -1,0 +1,12 @@
+{
+  "name": "china-rail-viz",
+  "version": "1.0.0",
+  "description": "Interactive timeline of China's railways and stations, 1876–today",
+  "type": "module",
+  "scripts": {
+    "build:data": "python scripts/fetch_stations_wikidata.py && python scripts/merge_railway_cache.py && python scripts/build_data.py",
+    "dev": "python -m http.server 3456 --directory public",
+    "start": "python scripts/build_data.py && python -m http.server 3456 --directory public"
+  },
+  "private": true
+}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>中国铁路百年图 · China Railways Bloom — 1876 to Today</title>
+  <meta name="description" content="Watch China's railways and stations appear on a map from the first Wusong line in 1876 to today." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="brand-kicker">Zhan · 站 · Railway Timeline</span>
+      <h1>中国铁路百年图 · Intercity Rail Hubs</h1>
+    </div>
+    <div class="stats">
+      <div class="stat"><strong id="stat-stations">—</strong>枢纽 hubs</div>
+      <div class="stat"><strong id="stat-railways">—</strong>线路 lines</div>
+      <div class="stat"><strong id="stat-years">—</strong>年 years</div>
+      <div class="stat"><strong id="stat-first">1876</strong>首条铁路 first line</div>
+    </div>
+  </header>
+
+  <main>
+    <div id="map-stage">
+      <div id="map-wrap">
+        <div id="map-inner">
+          <canvas id="map-canvas"></canvas>
+        </div>
+        <div class="search-wrap">
+          <input id="search" type="search" placeholder="搜索车站 Search — 北京, Shanghai, 西安…" autocomplete="off" />
+        </div>
+        <div id="tooltip" class="tooltip"></div>
+        <div class="map-hint">滚轮缩放 · 拖拽平移 · 双击重置<br>Scroll · Drag · Double-click reset</div>
+      </div>
+
+      <aside id="control-rail" class="control-rail">
+        <div class="sidebar-label">时代 Era</div>
+        <div id="era-bar" class="era-bar"></div>
+        <div class="year-display" id="year-display">1876</div>
+        <div class="counter" id="counter">—</div>
+        <div class="slider-wrap">
+          <input id="year-slider" type="range" min="1876" max="2026" value="1876" orient="vertical" />
+        </div>
+        <p class="year-sub" id="year-sub">Loading…</p>
+        <div class="btn-col">
+          <button id="play-btn" type="button">播放 Play</button>
+          <button class="secondary" id="btn-first" type="button">首条铁路 First</button>
+          <button class="secondary" id="btn-hsr" type="button">高铁 HSR</button>
+        </div>
+        <div class="sidebar-label">地图 Map</div>
+        <div class="zoom-controls">
+          <button id="btn-zoom-in" type="button" title="放大 Zoom in">＋</button>
+          <button id="btn-zoom-out" type="button" title="缩小 Zoom out">－</button>
+          <button class="secondary" id="btn-zoom-reset" type="button">重置 Reset</button>
+        </div>
+      </aside>
+    </div>
+    <canvas id="histogram"></canvas>
+  </main>
+
+  <section class="info-panel">
+    <div>
+      <h2>如何阅读 · How to read it</h2>
+      <p id="intro-text">Loading…</p>
+      <div class="legend">
+        <span><i class="rail-dot"></i> 铁路线路 Railway line</span>
+        <span><i class="station-dot"></i> 铁路枢纽 Intercity hub</span>
+      </div>
+      <p style="margin-top:0.75rem">
+        每个圆点是一座<strong>城际铁路枢纽</strong>（地铁/轻轨已剔除），在其开通年份亮起。
+      </p>
+    </div>
+    <div>
+      <h2>数据来源 · Source &amp; method</h2>
+      <ul>
+        <li><strong>Wikidata (CC0)</strong> — 城际铁路站（已排除地铁 Q928830、轻轨、有轨等）</li>
+        <li><strong>OpenStreetMap</strong> — 铁路线路几何与 start_date / end_date 标签</li>
+        <li><strong>史料校勘</strong> — 吴淞铁路 1876（上海市宝山区人民政府；Cambridge <em>IJAS</em> 2014）；唐胥铁路 1881（开平矿务局档案）</li>
+        <li><strong>海岸线</strong> — Natural Earth simplified outline</li>
+      </ul>
+      <p style="margin-top:0.5rem">起始年 <strong>1876</strong> 以中国第一段投入运营的铁路——吴淞铁路（上海—吴淞，14.5 km）为准。</p>
+      <p id="rail-hint" style="margin-top:0.5rem;color:var(--accent-soft)"></p>
+    </div>
+  </section>
+
+  <script src="js/d3.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.env
+.DS_Store
+Thumbs.db
+.vercel
+node_modules/
+*.bat

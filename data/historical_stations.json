@@ -1,0 +1,47 @@
+[
+  {
+    "id": "hist-wusong-shanghai",
+    "name_zh": "\u4e0a\u6d77\u7ad9\uff08\u5434\u6c85\u94c1\u8def\uff09",
+    "name_en": "Shanghai Station (Wusong Railway)",
+    "lat": 31.2304,
+    "lon": 121.4737,
+    "open_year": 1876,
+    "close_year": 1877
+  },
+  {
+    "id": "hist-wusong-jiangwan",
+    "name_zh": "\u6c5f\u6e7e\u7ad9",
+    "name_en": "Jiangwan Station",
+    "lat": 31.298,
+    "lon": 121.458,
+    "open_year": 1876,
+    "close_year": 1877
+  },
+  {
+    "id": "hist-wusong-wusong",
+    "name_zh": "\u5434\u6c85\u7ad9",
+    "name_en": "Wusong Station",
+    "lat": 31.378,
+    "lon": 121.438,
+    "open_year": 1876,
+    "close_year": 1877
+  },
+  {
+    "id": "hist-tangshan",
+    "name_zh": "\u5510\u5c71\u7ad9\uff08\u5510\u80e5\u94c1\u8def\u8d77\u70b9\uff09",
+    "name_en": "Tangshan Station (Tangxu Railway origin)",
+    "lat": 39.63,
+    "lon": 118.18,
+    "open_year": 1881,
+    "close_year": null
+  },
+  {
+    "id": "hist-xugezhuang",
+    "name_zh": "\u80e5\u5404\u5e84\u7ad9",
+    "name_en": "Xugezhuang Station",
+    "lat": 39.725,
+    "lon": 118.33,
+    "open_year": 1888,
+    "close_year": null
+  }
+]
