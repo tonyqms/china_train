@@ -19,6 +19,7 @@ if str(ROOT / "scripts") not in sys.path:
     sys.path.insert(0, str(ROOT / "scripts"))
 
 from railway_filters import is_metro_row, is_spur_row, simplify_coords
+from region_utils import clip_coords
 
 CACHE = ROOT / "data" / "osm_railways_cache.json"
 HIST = ROOT / "data" / "historical_railways.json"
@@ -77,13 +78,18 @@ def way_to_row(el: dict) -> list | None:
     if not open_y:
         open_y = 2008 if tags.get("highspeed") == "yes" else 1950
 
+    coords = simplify_coords(coords, max_pts=20, epsilon=0.012)
+    coords = clip_coords(coords)
+    if not coords:
+        return None
+
     return [
         f"osm-{el['id']}",
         name_zh,
         name_en,
         open_y,
         close_y or 0,
-        simplify_coords(coords, max_pts=20, epsilon=0.012),
+        coords,
         {
             "usage": tags.get("usage", ""),
             "service": tags.get("service", ""),

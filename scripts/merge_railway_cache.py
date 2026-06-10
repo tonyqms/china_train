@@ -16,6 +16,7 @@ from railway_filters import (
     seg_length,
     simplify_coords,
 )
+from region_utils import clip_coords, segment_in_china
 
 CACHE = ROOT / "data" / "osm_railways_cache.json"
 HIST = ROOT / "data" / "historical_railways.json"
@@ -29,17 +30,20 @@ MAX_POINTS = 16
 
 def load_curated() -> list[list]:
     rows = json.loads(HIST.read_text(encoding="utf-8"))
-    return [
-        [
+    out = []
+    for r in rows:
+        coords = clip_coords(r["coords"]) or r["coords"]
+        if not segment_in_china(coords):
+            continue
+        out.append([
             r["id"],
             r.get("name_zh") or "",
             r.get("name_en") or "",
             int(r["open_year"]),
             int(r["close_year"]) if r.get("close_year") else 0,
-            r["coords"],
-        ]
-        for r in rows
-    ]
+            coords,
+        ])
+    return out
 
 
 def row_tags(row: list) -> dict | None:
@@ -87,13 +91,15 @@ def accept_osm_row(row: list) -> tuple[bool, str]:
         return False, "short"
     if is_urban_short_spur(coords, length):
         return False, "urban_spur"
+    if not segment_in_china(coords):
+        return False, "outside"
 
     return True, "ok"
 
 
 def main() -> None:
     curated = load_curated()
-    stats = {"metro": 0, "spur": 0, "short": 0, "urban_spur": 0, "empty": 0, "ok": 0}
+    stats = {"metro": 0, "spur": 0, "short": 0, "urban_spur": 0, "outside": 0, "empty": 0, "ok": 0}
 
     if not CACHE.exists():
         print(f"No cache at {CACHE}; keeping curated lines only.")
@@ -119,6 +125,11 @@ def main() -> None:
             coords = row[5]
             if len(coords) > MAX_POINTS:
                 coords = simplify_coords(coords, max_pts=MAX_POINTS)
+            clipped = clip_coords(coords)
+            if not clipped:
+                stats["outside"] = stats.get("outside", 0) + 1
+                continue
+            coords = clipped
             length = seg_length(coords)
             scored.append((
                 length,
@@ -135,8 +146,8 @@ def main() -> None:
         meta["railway_count"] = len(merged)
         meta["osm_segment_count"] = len(osm_rows)
         meta["railway_filter"] = (
-            "intercity mainline — metro/spurs/urban fragments excluded; "
-            f"preserve geometry up to {MAX_POINTS} pts"
+            "intercity mainline within China/TW/HK/MO — metro/spurs excluded; "
+            f"geometry clipped to territory, max {MAX_POINTS} pts"
         )
         META.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -144,7 +155,7 @@ def main() -> None:
         f"Wrote {len(merged)} segments ({len(curated)} curated + {len(osm_rows)} OSM)\n"
         f"  scanned {len(seen)} ways — dropped metro {stats.get('metro',0)}, "
         f"spur {stats.get('spur',0)}, short {stats.get('short',0)}, "
-        f"urban_spur {stats.get('urban_spur',0)}"
+        f"urban_spur {stats.get('urban_spur',0)}, outside {stats.get('outside',0)}"
     )
 
 
